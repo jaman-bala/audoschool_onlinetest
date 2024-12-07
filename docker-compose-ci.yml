@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Backend service
+  backend:
+    container_name: "backend"
+    image: backend-api-image:latest
+    ports:
+      - "8000:8000"
+    networks:
+      - backend_network
+
+  # Celery worker for background tasks
+  backend_celery_worker_service:
+    container_name: "backend_celery_worker"
+    image: backend-api-image:latest
+    networks:
+      - backend_network
+    command: "celery --app=src.tasks.celery_app:celery_instance worker -l INFO"
+
+  # Celery beat for periodic tasks
+  backend_celery_beat_service:
+    container_name: "backend_celery_beat"
+    image: backend-api-image:latest
+    networks:
+      - backend_network
+    command: "celery --app=src.tasks.celery_app:celery_instance beat -l INFO"
+
+  # PostgreSQL service
+  db:
+    container_name: "ci_postgres"
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data_ci:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  # Redis service
+  redis:
+    container_name: "ci_redis"
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - backend_network
+
+  # RabbitMQ service
+  rabbitmq:
+    container_name: "ci_rabbitmq"
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend_network
+
+volumes:
+  db_data_ci:
+
+networks:
+  backend_network:
+    external: true

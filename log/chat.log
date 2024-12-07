@@ -1,0 +1,138 @@
+INFO:src.api.chats:Creating message: chat_id=UUID('62698d21-42f1-45b9-a08b-59634dd3d26c') sender_id=UUID('5902dc0d-be87-4f3c-b701-2254e889dd40') content='Хорошо брат я тебя понял!'
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:src.api.chats:Creating message: chat_id=UUID('62698d21-42f1-45b9-a08b-59634dd3d26c') sender_id=UUID('136f96e4-2c67-4528-a910-a5f58a3ec7f9') content='От души! \U0001f603'
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:4 changes detected
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\mrrobot\Desktop\Dashboard-admin\favenv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:src.api.chats:Creating message: chat_id=UUID('62698d21-42f1-45b9-a08b-59634dd3d26c') sender_id=UUID('136f96e4-2c67-4528-a910-a5f58a3ec7f9') content='Хоп!! \U0001f603'
+INFO:watchfiles.main:8 changes detected
+INFO:src.api.chats:Creating message: chat_id=UUID('62698d21-42f1-45b9-a08b-59634dd3d26c') sender_id=UUID('136f96e4-2c67-4528-a910-a5f58a3ec7f9') content='Хоп!! \U0001f603'
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\mrrobot\Desktop\Dashboard-admin\favenv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:watchfiles.main:4 changes detected
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\mrrobot\Desktop\Dashboard-admin\favenv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:8 changes detected
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\mrrobot\Desktop\Dashboard-admin\favenv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\mrrobot\Desktop\Dashboard-admin\favenv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:6 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:8 changes detected
+INFO:watchfiles.main:7 changes detected
+INFO:watchfiles.main:6 changes detected
+WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\mrrobot\Desktop\Dashboard-admin\favenv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:8 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:7 changes detected
+INFO:watchfiles.main:6 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:6 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:6 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:6 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:5 changes detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:1 change detected
+INFO:watchfiles.main:4 changes detected
+INFO:watchfiles.main:4 changes detected

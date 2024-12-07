@@ -1,0 +1,40 @@
+stages:
+  - build
+  - lint_format
+  - migrations
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  before_script:
+    - echo "$ENV" > .env
+    - echo "$TEST_ENV" > .env-test
+  script:
+    - docker build -t backend-api-image .
+
+Lint:
+  stage: lint_format
+  script:
+    - docker run --rm --network backend_network backend-api-image ruff check
+
+Format:
+  stage: lint_format
+  script:
+    - docker run --rm --network backend_network backend-api-image ruff format --check
+
+Migrations:
+  stage: migrations
+  script:
+  - docker run --rm --network backend_network backend-api-image alembic upgrade head
+
+Test:
+  stage: test
+  script:
+    - docker run --rm --network backend_network backend-api-image pytest -s -v
+
+deploy-job:
+  stage: deploy
+  script:
+    - docker compose -f docker-compose-ci.yml up -d
+
