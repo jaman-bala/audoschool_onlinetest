@@ -13,7 +13,6 @@ if typing.TYPE_CHECKING:
     from src.models import ImagesOrm
 
 
-
 # TODO: Модель вопроса
 class QuestionOrm(Base):
     __tablename__ = "questions"

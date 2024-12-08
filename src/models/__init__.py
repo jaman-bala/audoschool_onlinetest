@@ -17,5 +17,5 @@ __all__ = [
     "TicketOrm",
     "TotalOrm",
     "ThemeOrm",
-    "ImagesOrm"
+    "ImagesOrm",
 ]

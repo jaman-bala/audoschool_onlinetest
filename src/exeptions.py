@@ -55,6 +55,11 @@ class ExpiredTokenException(AllErrorException):
 class FaceNoCorrectionException(AllErrorException):
     detail = "Ошибка распознавания лица"
 
+class AnswerNotFoundException(AllErrorException):
+    detail = "Вопрос не найден"
+
+class GroupNotFoundException(AllErrorException):
+    detail = "Группа не найден"
 
 class AllErrorHTTPException(HTTPException):
     status_code = 500

@@ -17,6 +17,13 @@ class QuestionAdd(BaseModel):
     theme_id: uuid.UUID
 
 
+class QuestionPatch(BaseModel):
+    title: str = Field(default=None, max_length=999)
+    description: str = Field(default=None)
+    ticket_id: uuid.UUID
+    theme_id: uuid.UUID
+
+
 class Question(BaseModel):
     id: uuid.UUID
     title: str = Field(default=None, max_length=999)

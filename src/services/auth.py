@@ -19,11 +19,10 @@ from src.exeptions import (
 from src.models import UsersOrm
 from src.schemas.users import (
     UserAdd,
-    UserUpdatePassword,
     UserPatchRequest,
-    UserAddLogin,
     UserRequestAdd,
-    UserUpdateInn,
+    UserRequestLogin,
+    UserRequestUpdatePassword,
 )
 from src.services.base import BaseService
 from src.services.images import ImagesService
@@ -87,28 +86,16 @@ class AuthService(BaseService):
             raise IncorrectTokenHTTPException
 
     async def register_user(self, data: UserRequestAdd):
-        existing_user = await self.db.users.get_one_or_none(inn=data.inn)
-        if existing_user:
-            raise InnAlreadyExistsException
         hashed_password = self.hash_password(data.password)
         new_user_data = UserAdd(
-            inn=data.inn,
-            name=data.name,
-            surname=data.surname,
-            middle_name=data.middle_name,
-            phone_number=data.phone_number,
-            address=data.address,
-            email=data.email,
+            firstname=data.firstname,
+            lastname=data.lastname,
+            phone=data.phone,
             hashed_password=hashed_password,
-            birthday=data.birthday,
-            groups=data.groups,
-            categories=data.categories,
-            date_from=data.date_from,
-            date_to=data.date_to,
-            price=data.price,
-            is_active=data.is_active,
-            admin=data.admin,
-            user=data.user,
+            is_ready=data.is_ready,
+            group_id=data.group_id,
+            is_active=True,
+            roles=data.roles,
             created_date=datetime.utcnow(),
             updated_date=datetime.utcnow(),
         )
@@ -133,9 +120,9 @@ class AuthService(BaseService):
             raise IncorrectTokenHTTPException
         return user
 
-    async def login_user(self, data: UserAddLogin):
+    async def login_user(self, data: UserRequestLogin):
         user = await self.db.users.get_user_phone_number_with_hashed_password(
-            phone_number=data.phone_number
+            phone=data.phone
         )
         if not user:
             raise InnAlreadyExistsException
@@ -166,13 +153,6 @@ class AuthService(BaseService):
             raise UserNotFoundException
         return user
 
-    async def put_user(self, user_id: UUID, data: UserUpdateInn):
-        user = await self.db.users.get_one_or_none(id=user_id)
-        if not user:
-            raise UserNotFoundException
-        await self.db.users.update(data, id=user_id)
-        await self.db.commit()
-
     async def patch_user(self, user_id: UUID, data: UserPatchRequest, exclude_unset: bool = False):
         user = await self.db.users.get_one_or_none(id=user_id)
         if not user:
@@ -180,10 +160,14 @@ class AuthService(BaseService):
         await self.db.users.edit_patch(data, exclude_unset, id=user_id)
         await self.db.commit()
 
-    async def change_password(self, user_id: UUID, data: UserUpdatePassword):
+    async def change_password(self, user_id: UUID, data: UserRequestUpdatePassword):
         user = await self.db.users.get_one(id=user_id)
         if not user:
             raise UserNotFoundException
         hashed_new_password = self.hash_password(data.new_password)
         await self.db.users.update_user_hashed_password(user_id, hashed_new_password)
+        await self.db.commit()
+
+    async def delete_user(self, user_id: uuid.UUID):
+        await self.db.users.delete(id=user_id)
         await self.db.commit()

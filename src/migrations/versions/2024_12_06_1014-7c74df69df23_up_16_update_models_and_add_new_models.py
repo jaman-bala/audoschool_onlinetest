@@ -1,7 +1,7 @@
-"""up:16 update models and add new models 
+"""up:16 update models and add new models
 
 Revision ID: 7c74df69df23
-Revises: 
+Revises:
 Create Date: 2024-12-06 10:14:14.986295
 
 """
@@ -308,4 +308,3 @@ def downgrade() -> None:
     op.drop_table("themes")
     op.drop_table("images")
     op.drop_table("groups")
-

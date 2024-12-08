@@ -14,6 +14,7 @@ from src.api.images import router as router_images
 from src.api.questions import router as router_questions
 from src.api.tickets import router as router_tickets
 from src.api.answers import router as router_answers
+from src.api.group import router as router_group
 from src.config import settings
 
 
@@ -36,6 +37,7 @@ app.include_router(router_images)
 app.include_router(router_tickets)
 app.include_router(router_questions)
 app.include_router(router_answers)
+app.include_router(router_group)
 
 
 if __name__ == "__main__":

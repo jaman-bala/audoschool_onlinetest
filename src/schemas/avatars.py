@@ -1,3 +1,5 @@
+import uuid
+
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
@@ -17,5 +19,36 @@ class Avatar(BaseModel):
     file_path: str | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ImagesAddRequest(BaseModel):
+    path: str | None = None
+
+
+class ImagesAdd(BaseModel):
+    path: str | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+
+
+class ImagesPatch(BaseModel):
+    path: str | None = None
+
+
+class Images(BaseModel):
+    id: uuid.UUID
+    path: str | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class QuestionsImages(BaseModel):
+    id: uuid.UUID
+    question_id: uuid.UUID
+    image_id: uuid.UUID
 
     model_config = ConfigDict(from_attributes=True)

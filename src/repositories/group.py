@@ -1,8 +1,8 @@
-from src.models import ExamOrm
 from src.repositories.base import BaseRepository
-from src.repositories.mappers.mappers import ExamDataMapper
+from src.models import GroupOrm
+from src.repositories.mappers.mappers import GroupDataMapper
 
 
-class ExamsRepository(BaseRepository):
-    model = ExamOrm
-    mapper = ExamDataMapper
+class GroupsRepository(BaseRepository):
+    model = GroupOrm
+    mapper = GroupDataMapper

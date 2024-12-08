@@ -1,9 +1,11 @@
-from src.repositories.group import ExamsRepository
-from src.repositories.history import HistoriesRepository
+from src.repositories.group import GroupsRepository
 from src.repositories.images import ImagesRepository
+from src.repositories.payments import PaymentsRepository
 from src.repositories.questions import QuestionsRepository
 from src.repositories.answers import AnswersRepository
+from src.repositories.themes import ThemesRepository
 from src.repositories.tickets import TicketsRepository
+from src.repositories.totals import TotalsRepository
 from src.repositories.users import UsersRepository
 
 
@@ -16,11 +18,14 @@ class DBManager:
 
         self.users = UsersRepository(self.session)
         self.images = ImagesRepository(self.session)
-        self.questions = QuestionsRepository(self.session)
         self.answers = AnswersRepository(self.session)
-        self.exams = ExamsRepository(self.session)
+        self.groups = GroupsRepository(self.session)
+        self.payments = PaymentsRepository(self.session)
+        self.questions = QuestionsRepository(self.session)
+        self.reports = PaymentsRepository(self.session)
+        self.themes = ThemesRepository(self.session)
         self.tickets = TicketsRepository(self.session)
-        self.histories = HistoriesRepository(self.session)
+        self.totals = TotalsRepository(self.session)
 
         return self
 

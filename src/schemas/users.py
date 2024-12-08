@@ -16,20 +16,19 @@ class UserRequestAdd(BaseModel):
     phone: str
     is_ready: int = Field(default=None)
     group_id: UUID
-    is_active: bool
+    is_active: bool | None = True
     roles: list[Role] = Field(default_factory=lambda: [Role.USER])
 
 
 class UserAdd(BaseModel):
-    id: UUID
     firstname: str = Field(default=None, max_length=100)
     lastname: str = Field(default=None, max_length=100)
-    avatar: str = Field(default=None, max_length=200)
     phone: str
+    hashed_password: str
     is_ready: int = Field(default=None)
     group_id: UUID
-    is_active: bool
-    roles: List[Role]
+    is_active: bool | None = True
+    roles: list[Role]
     created_date: datetime
     updated_date: datetime
 

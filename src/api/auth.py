@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter, Response
 from uuid import UUID
 
@@ -36,12 +38,8 @@ async def register_user(
 ):
     # if not role_superuser:
     #     raise RolesSuperuserException
-    try:
-        await AuthService(db).register_user(data)
-    except UserAlreadyExistsException:
-        raise UserEmailAlreadyExistsHTTPException
-    except InnAlreadyExistsException:
-        raise InnAlreadyExistsHTTPException
+    await AuthService(db).register_user(data)
+
     return {"status": "Пользователь создан"}
 
 
@@ -153,3 +151,9 @@ async def update_user(
     except ObjectNotFoundException:
         raise UserNotFoundException
     return {"message": "Данные пользователя частично изменены"}
+
+
+@router.delete("/{user_id")
+async def delete_user(user_id: uuid.UUID, db: DBDep):
+    await AuthService(db).delete_user(user_id)
+    return {"message": "Пользователь удален"}

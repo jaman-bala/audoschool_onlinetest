@@ -1,26 +1,33 @@
-from uuid import UUID
+import uuid
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 
 class AnswerAddRequest(BaseModel):
-    text: str | None = None
+    title: str | None = None
     is_correct: bool = False
+    question_id: uuid.UUID
 
 
 class AnswerAdd(BaseModel):
-    text: str | None = None
+    title: str | None = None
     is_correct: bool = False
-    question_id: UUID
+    question_id: uuid.UUID
     created_date: datetime
     updated_date: datetime
 
 
-class Answer(BaseModel):
-    id: UUID
-    text: str | None = None
+class AnswerPatch(BaseModel):
+    title: str | None = None
     is_correct: bool = False
-    question_id: UUID
+    question_id: uuid.UUID
+
+
+class Answer(BaseModel):
+    id: uuid.UUID
+    title: str | None = None
+    is_correct: bool = False
+    question_id: uuid.UUID
     created_date: datetime
     updated_date: datetime
 

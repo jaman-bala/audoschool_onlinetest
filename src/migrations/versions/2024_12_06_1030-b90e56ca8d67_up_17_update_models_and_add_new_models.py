@@ -1,4 +1,4 @@
-"""up:17 update models and add new models 
+"""up:17 update models and add new models
 
 Revision ID: b90e56ca8d67
 Revises: 7c74df69df23
@@ -54,8 +54,5 @@ def downgrade() -> None:
         "questions",
         sa.Column("image_id", sa.UUID(), autoincrement=False, nullable=False),
     )
-    op.create_foreign_key(
-        "questions_image_id_fkey", "questions", "images", ["image_id"], ["id"]
-    )
+    op.create_foreign_key("questions_image_id_fkey", "questions", "images", ["image_id"], ["id"])
     op.drop_table("questions_images")
-
