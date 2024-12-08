@@ -17,12 +17,12 @@ async def create_group(data: GroupAddRequest, db: DBDep):
 async def get_group(db: DBDep):
     return await GroupsService(db).get_group()
 
-@router.patch("/group_id")
+@router.patch("/group_id", summary="Частичное изминение")
 async def patch_group(grop_id: uuid.UUID, data: GroupPatch, db: DBDep):
     await GroupsService(db).patch_group(grop_id, data)
     return {"message": "Данные честично изменены"}
 
-@router.delete("/{group_id")
+@router.delete("/{group_id", summary="Удаление данных")
 async def delete_group(group_id: uuid.UUID, db: DBDep):
     await GroupsService(db).delete_group(group_id)
     return {"message": "Данные удалены"}

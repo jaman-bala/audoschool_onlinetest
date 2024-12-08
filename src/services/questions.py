@@ -16,4 +16,3 @@ class QuestionsService(BaseService):
         )
         self.db.questions.add(new_question)
         await self.db.commit()
-        return new_question
