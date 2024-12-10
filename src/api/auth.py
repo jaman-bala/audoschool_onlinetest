@@ -6,10 +6,6 @@ from uuid import UUID
 from src.api.dependencies import UserIdDep, DBDep, RoleSuperuserDep, RoleAdminDep
 from src.exeptions import (
     UserNotFoundException,
-    UserAlreadyExistsException,
-    UserEmailAlreadyExistsHTTPException,
-    InnAlreadyExistsException,
-    InnAlreadyExistsHTTPException,
     ObjectNotFoundException,
     UserNotRegisteredHTTPException,
     IncorrectPasswordException,
@@ -80,11 +76,11 @@ async def get_me(
 
 @router.get("/get_all_users", summary="Вывод всех пользователей 👨🏽‍💻")
 async def get_all_users(
-    role_admin: RoleAdminDep,
+   # role_admin: RoleAdminDep,
     db: DBDep,
 ):
-    if not role_admin:
-        raise RolesAdminException
+    # if not role_admin:
+    #     raise RolesAdminException
     try:
         return await AuthService(db).get_all_users()
     except ExpiredTokenException:

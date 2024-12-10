@@ -44,8 +44,8 @@ class IncorrectPasswordException(AllErrorException):
     detail = "Пароль неверный"
 
 
-class InnAlreadyExistsException(AllErrorException):
-    detail = "Пользователь с таким ИНН уже существует"
+class PhoneAlreadyExistsException(AllErrorException):
+    detail = "Пользователь с таким номером телефона уже существует"
 
 
 class ExpiredTokenException(AllErrorException):
@@ -55,11 +55,38 @@ class ExpiredTokenException(AllErrorException):
 class FaceNoCorrectionException(AllErrorException):
     detail = "Ошибка распознавания лица"
 
+
 class AnswerNotFoundException(AllErrorException):
     detail = "Вопрос не найден"
 
+
 class GroupNotFoundException(AllErrorException):
     detail = "Группа не найден"
+
+
+class PaymentNotFoundException(AllErrorException):
+    detail = "Платёж не найден"
+
+
+class QuestionNotFoundException(AllErrorException):
+    detail = "Вопрос не найден"
+
+
+class ReportNotFoundException(AllErrorException):
+    detail = "Отчёт не найден"
+
+
+class ThemeNotFoundException(AllErrorException):
+    detail = "Тема не найден"
+
+
+class TicketNotFoundException(AllErrorException):
+    detail = "Билет не найден"
+
+
+class TotalNotFoundException(AllErrorException):
+    detail = "Финальный отчёт не найден"
+
 
 class AllErrorHTTPException(HTTPException):
     status_code = 500

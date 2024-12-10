@@ -1,6 +1,7 @@
 import sys
 import uvicorn
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi_cache import FastAPICache
@@ -15,6 +16,10 @@ from src.api.questions import router as router_questions
 from src.api.tickets import router as router_tickets
 from src.api.answers import router as router_answers
 from src.api.group import router as router_group
+from src.api.payments import router as router_payments
+from src.api.reports import router as router_reports
+from src.api.themes import router as router_themes
+from src.api.totals import router as router_totals
 from src.config import settings
 
 
@@ -32,12 +37,20 @@ app = FastAPI(
     version=settings.PROJECT_VERSION,
 )
 
+app.mount("/static/avatars", StaticFiles(directory=settings.LINK_IMAGES), name="avatars")
+app.mount("/static/photo", StaticFiles(directory=settings.LINK_UPLOAD_PHOTO), name="photo")
+app.mount("/static/upload-files", StaticFiles(directory=settings.LINK_UPLOAD_FILES), name="upload-files")
+
 app.include_router(router_auth)
 app.include_router(router_images)
 app.include_router(router_tickets)
 app.include_router(router_questions)
 app.include_router(router_answers)
 app.include_router(router_group)
+app.include_router(router_payments)
+app.include_router(router_reports)
+app.include_router(router_themes)
+app.include_router(router_totals)
 
 
 if __name__ == "__main__":

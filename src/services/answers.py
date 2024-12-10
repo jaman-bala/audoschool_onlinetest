@@ -18,12 +18,13 @@ class AnswersService(BaseService):
         await self.db.answers.add(new_answer)
         await self.db.commit()
 
-
     async def get_answers(self):
         answers = await self.db.answers.get_all()
         return answers
 
-    async def patch_answers(self, answer_id: uuid.UUID, data: AnswerPatch, exclude_unset: bool = False):
+    async def patch_answers(
+        self, answer_id: uuid.UUID, data: AnswerPatch, exclude_unset: bool = False
+    ):
         answer = await self.db.answers.get_one_or_none(id=answer_id)
         if not answer:
             raise AnswerNotFoundException
@@ -33,4 +34,3 @@ class AnswersService(BaseService):
     async def delete_answer(self, answer_id: uuid.UUID):
         await self.db.answers.delete(id=answer_id)
         await self.db.commit()
-

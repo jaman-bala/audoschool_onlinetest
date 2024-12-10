@@ -12,9 +12,9 @@ from src.exeptions import (
     UserAlreadyExistsException,
     UserNotFoundException,
     IncorrectTokenHTTPException,
-    InnAlreadyExistsException,
     IncorrectPasswordHTTPException,
     ExpiredTokenHTTPException,
+    PhoneAlreadyExistsException,
 )
 from src.models import UsersOrm
 from src.schemas.users import (
@@ -121,11 +121,9 @@ class AuthService(BaseService):
         return user
 
     async def login_user(self, data: UserRequestLogin):
-        user = await self.db.users.get_user_phone_number_with_hashed_password(
-            phone=data.phone
-        )
+        user = await self.db.users.get_user_phone_number_with_hashed_password(phone=data.phone)
         if not user:
-            raise InnAlreadyExistsException
+            raise PhoneAlreadyExistsException
         if not self.verify_password(data.password, user.hashed_password):
             raise IncorrectPasswordHTTPException
         access_token = self.create_access_token(user)

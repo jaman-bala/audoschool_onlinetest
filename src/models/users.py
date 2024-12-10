@@ -20,12 +20,14 @@ class UsersOrm(Base):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    firstname: Mapped[Optional[str]] = mapped_column(String(100))
-    lastname: Mapped[Optional[str]] = mapped_column(String(100))
+    firstname: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    lastname: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     phone: Mapped[Optional[str]] = mapped_column(String(20))
     hashed_password: Mapped[str] = mapped_column(String(200))
     is_ready: Mapped[int] = mapped_column(Integer)
-    group_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("groups.id"))
+    group_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("groups.id"), nullable=True
+    )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     roles: Mapped[List[Role]] = mapped_column(ARRAY(String))
 

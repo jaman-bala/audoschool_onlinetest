@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-from tokenize import group
 
 from src.exeptions import GroupNotFoundException
 from src.schemas.group import GroupAddRequest, GroupAdd, GroupPatch
@@ -24,12 +23,12 @@ class GroupsService(BaseService):
         await self.db.commit()
 
     async def get_group(self):
-        group = await self.db.groups.get_all()
-        return group
+        groups = await self.db.groups.get_all()
+        return groups
 
     async def patch_group(self, group_id: uuid.UUID, data: GroupPatch, exclude_unset: bool = False):
-        group = await self.db.groups.get_one_or_none(id=group_id)
-        if not group:
+        groups = await self.db.groups.get_one_or_none(id=group_id)
+        if not groups:
             raise GroupNotFoundException
         await self.db.groups.edit_patch(data, exclude_unset=exclude_unset, id=group_id)
         await self.db.commit()

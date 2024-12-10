@@ -46,6 +46,10 @@ class Images(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class QuestionsImagesAdd(BaseModel):
+    question_id: uuid.UUID
+    image_id: uuid.UUID
+
 class QuestionsImages(BaseModel):
     id: uuid.UUID
     question_id: uuid.UUID

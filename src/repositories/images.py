@@ -1,13 +1,14 @@
-from src.models import AvatarOrm
+import uuid
+from src.models import ImagesOrm
 from src.repositories.base import BaseRepository
-from src.repositories.mappers.mappers import AvatarDataMapper
+from src.repositories.mappers.mappers import ImageDataMapper
 
 
 class ImagesRepository(BaseRepository):
-    model = AvatarOrm
-    mapper = AvatarDataMapper
+    model = ImagesOrm
+    mapper = ImageDataMapper
 
-    async def upload(self, user_id: int, avatar_url: str):
-        image = self.model(avatar_url=avatar_url, user_id=user_id)
+    async def upload(self, question_id: uuid.UUID, photo_filename: str):
+        image = self.model(filename=photo_filename, question_id=question_id)
         await self.session.add(image)
         await self.session.commit()
