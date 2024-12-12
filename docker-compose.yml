@@ -31,6 +31,14 @@ services:
     networks:
       - backend_network
 
+  # Redis service for caching and task queuing
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - backend_network
+
 volumes:
   db_data:
 
