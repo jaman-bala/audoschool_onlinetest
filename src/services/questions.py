@@ -2,20 +2,18 @@ import uuid
 from fastapi import Form, UploadFile, File
 
 from src.exeptions import QuestionNotFoundException
-from src.models import QuestionOrm
-from src.schemas.questions import QuestionPatch, QuestionAdd, QuestionAddRequest
+from src.schemas.questions import QuestionPatch, QuestionAdd
 from src.services.base import BaseService
-
 
 
 class QuestionsService(BaseService):
     async def create_questions(
-            self,
-            title: str = Form(None),
-            description: str = Form(None),
-            ticket_id: uuid.UUID = Form(None),
-            theme_id: uuid.UUID = Form(None),
-            files: list[UploadFile] = File(None),
+        self,
+        title: str = Form(None),
+        description: str = Form(None),
+        ticket_id: uuid.UUID = Form(None),
+        theme_id: uuid.UUID = Form(None),
+        files: list[UploadFile] = File(None),
     ):
         filenames = []
         if files:
@@ -32,7 +30,6 @@ class QuestionsService(BaseService):
         )
         await self.db.questions.add(new_question)
         await self.db.commit()
-
 
     async def get_questions(self):
         questions = await self.db.questions.get_all()
@@ -52,9 +49,7 @@ class QuestionsService(BaseService):
         await self.db.commit()
 
     async def patch_questions_file(
-            self,
-            question_id: uuid.UUID,
-            files: list[UploadFile] = File(None)
+        self, question_id: uuid.UUID, files: list[UploadFile] = File(None)
     ):
         question = await self.db.questions.get_one_or_none(id=question_id)
 

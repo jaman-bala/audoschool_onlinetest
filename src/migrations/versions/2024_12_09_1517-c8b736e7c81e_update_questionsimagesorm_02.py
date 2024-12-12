@@ -46,9 +46,7 @@ def downgrade() -> None:
             autoincrement=False,
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(
-            ["image_id"], ["images.id"], name="questions_images_image_id_fkey"
-        ),
+        sa.ForeignKeyConstraint(["image_id"], ["images.id"], name="questions_images_image_id_fkey"),
         sa.ForeignKeyConstraint(
             ["question_id"], ["questions.id"], name="questions_images_question_id_fkey"
         ),

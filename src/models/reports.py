@@ -1,5 +1,4 @@
 import uuid
-from typing import Optional
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID
@@ -16,13 +15,13 @@ class ReportOrm(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"))
     ticket_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("tickets.id"))
     theme_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("themes.id"))
-    points: Mapped[Optional[int]] = mapped_column(Integer)
-    date_from: Mapped[Optional[date]] = mapped_column(Date)
-    date_end: Mapped[Optional[date]] = mapped_column(Date)
+    points: Mapped[int | None] = mapped_column(Integer)
+    date_from: Mapped[date | None] = mapped_column(Date)
+    date_end: Mapped[date | None] = mapped_column(Date)
 
-    created_date: Mapped[Optional[datetime]] = mapped_column(
+    created_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )  # TODO: Дата создание
-    updated_date: Mapped[Optional[datetime]] = mapped_column(
+    updated_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), onupdate=func.now()
     )  # TODO: Дата обновление

@@ -20,7 +20,7 @@ class QuestionsRepository(BaseRepository):
             await buffer.write(content)
         return f"/static/photo/{unique_filename}"
 
-    async def upload_files(self, files: list[UploadFile]) -> list[str]:  # Добавлено self
+    async def upload_files(self, files: list[UploadFile]) -> list[str]:
         """Сохраняет файлы и возвращает список их путей."""
         file_paths = []
         for file in files:

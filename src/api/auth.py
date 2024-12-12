@@ -3,7 +3,7 @@ import uuid
 from fastapi import APIRouter, Response
 from uuid import UUID
 
-from src.api.dependencies import UserIdDep, DBDep, RoleSuperuserDep, RoleAdminDep
+from src.api.dependencies import UserIdDep, DBDep, RoleSuperuserDep
 from src.exeptions import (
     UserNotFoundException,
     ObjectNotFoundException,
@@ -13,10 +13,10 @@ from src.exeptions import (
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     RolesAdminException,
+    RolesSuperuserException,
 )
 from src.schemas.users import (
     UserRequestLogin,
-    UserUpdateRequest,
     UserRequestUpdatePassword,
     UserPatchRequest,
     UserRequestAdd,
@@ -28,12 +28,12 @@ router = APIRouter(prefix="/auth", tags=["Авторизация и аутент
 
 @router.post("/create", summary="Создание пользователя 👨🏽‍💻")
 async def register_user(
-    # role_superuser: RoleSuperuserDep,
+    role_superuser: RoleSuperuserDep,
     data: UserRequestAdd,
     db: DBDep,
 ):
-    # if not role_superuser:
-    #     raise RolesSuperuserException
+    if not role_superuser:
+        raise RolesSuperuserException
     await AuthService(db).register_user(data)
 
     return {"status": "Пользователь создан"}
@@ -76,11 +76,11 @@ async def get_me(
 
 @router.get("/get_all_users", summary="Вывод всех пользователей 👨🏽‍💻")
 async def get_all_users(
-   # role_admin: RoleAdminDep,
+    role_admin: RoleSuperuserDep,
     db: DBDep,
 ):
-    # if not role_admin:
-    #     raise RolesAdminException
+    if not role_admin:
+        raise RolesAdminException
     try:
         return await AuthService(db).get_all_users()
     except ExpiredTokenException:
@@ -97,44 +97,10 @@ async def logout_user(
     return {"message": "Выход из системы успешен"}
 
 
-@router.put("/{user_id}", summary="Измнить данные у пользователя 👨🏽‍💻")
-async def put_user(
-    user_id: UUID,
-    db: DBDep,
-    data: UserUpdateRequest,
-    role_admin: RoleAdminDep,
-):
-    if not role_admin:
-        raise RolesAdminException
-    try:
-        await AuthService(db).put_user(user_id, data)
-    except ExpiredTokenException:
-        raise ExpiredTokenHTTPException
-    except ObjectNotFoundException:
-        raise UserNotFoundException
-    return {"message": "Данные пользователя изменены"}
-
-
-@router.put("/change_password/{user_id}", summary="Сброс пароля")
-async def change_password(
-    user_id: UUID,
-    role_admin: RoleAdminDep,
-    data: UserRequestUpdatePassword,
-    db: DBDep,
-):
-    if not role_admin:
-        raise RolesAdminException
-    try:
-        await AuthService(db).change_password(user_id, data)
-    except ExpiredTokenException:
-        raise ExpiredTokenHTTPException
-    return {"message": "Пароль успешно изменён"}
-
-
 @router.patch("/update/{user_id}", summary="Частичное изменение 👨🏽‍💻")
 async def update_user(
     user_id: UUID,
-    role_admin: RoleAdminDep,
+    role_admin: RoleSuperuserDep,
     db: DBDep,
     data: UserPatchRequest,
 ):
@@ -150,6 +116,29 @@ async def update_user(
 
 
 @router.delete("/{user_id")
-async def delete_user(user_id: uuid.UUID, db: DBDep):
-    await AuthService(db).delete_user(user_id)
+async def delete_user(user_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
+    if not role_admin:
+        raise RolesAdminException
+    try:
+        await AuthService(db).delete_user(user_id)
+    except ExpiredTokenException:
+        raise ExpiredTokenHTTPException
+    except ObjectNotFoundException:
+        raise UserNotFoundException
     return {"message": "Пользователь удален"}
+
+
+@router.put("/change_password/{user_id}", summary="Сброс пароля")
+async def change_password(
+    user_id: UUID,
+    role_admin: RoleSuperuserDep,
+    data: UserRequestUpdatePassword,
+    db: DBDep,
+):
+    if not role_admin:
+        raise RolesAdminException
+    try:
+        await AuthService(db).change_password(user_id, data)
+    except ExpiredTokenException:
+        raise ExpiredTokenHTTPException
+    return {"message": "Пароль успешно изменён"}

@@ -2,8 +2,15 @@ import uuid
 from typing import List
 from fastapi import APIRouter, UploadFile, File, Form
 
-from src.api.dependencies import DBDep
-from src.schemas.questions import QuestionPatch, QuestionAddRequest
+from src.api.dependencies import DBDep, RoleSuperuserDep
+from src.exeptions import (
+    RolesAdminException,
+    ExpiredTokenException,
+    ExpiredTokenHTTPException,
+    ObjectNotFoundException,
+    UserNotFoundException,
+)
+from src.schemas.questions import QuestionPatch
 from src.services.questions import QuestionsService
 
 router = APIRouter(prefix="/questions", tags=["Вопросы"])
@@ -11,13 +18,16 @@ router = APIRouter(prefix="/questions", tags=["Вопросы"])
 
 @router.post("/create", summary="Создание билетов")
 async def create_question(
-        db: DBDep,
-        title: str = Form(None),
-        description: str = Form(None),
-        ticket_id: uuid.UUID = Form(None),
-        theme_id: uuid.UUID = Form(None),
-        files: List[UploadFile] = File(None),
+    db: DBDep,
+    role_admin: RoleSuperuserDep,
+    title: str = Form(None),
+    description: str = Form(None),
+    ticket_id: uuid.UUID = Form(None),
+    theme_id: uuid.UUID = Form(None),
+    files: List[UploadFile] = File(None),
 ):
+    if not role_admin:
+        raise RolesAdminException
     await QuestionsService(db).create_questions(
         title=title, description=description, ticket_id=ticket_id, theme_id=theme_id, files=files
     )
@@ -30,22 +40,46 @@ async def get_questions(db: DBDep):
 
 
 @router.patch("/{question_id}", summary="Частичное изминение данных")
-async def patch_question(question_id: uuid.UUID, data: QuestionPatch, db: DBDep):
-    await QuestionsService(db).patch_questions(question_id, data)
+async def patch_question(
+    question_id: uuid.UUID, role_admin: RoleSuperuserDep, data: QuestionPatch, db: DBDep
+):
+    if not role_admin:
+        raise RolesAdminException
+    try:
+        await QuestionsService(db).patch_questions(question_id, data)
+    except ExpiredTokenException:
+        raise ExpiredTokenHTTPException
+    except ObjectNotFoundException:
+        raise UserNotFoundException
     return {"message": "Данные частично изменены"}
 
 
 @router.delete("/{question_id}", summary="Удаление вопроса")
-async def delete_question(question_id: uuid.UUID, db: DBDep):
-    await QuestionsService(db).delete_question(question_id)
+async def delete_question(question_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
+    if not role_admin:
+        raise RolesAdminException
+    try:
+        await QuestionsService(db).delete_question(question_id)
+    except ExpiredTokenException:
+        raise ExpiredTokenHTTPException
+    except ObjectNotFoundException:
+        raise UserNotFoundException
     return {"message": "Вопрос удален"}
 
 
 @router.put("/{question_id}", summary="Обновление файлов для вопроса")
 async def put_question_files(
     db: DBDep,
+    role_admin: RoleSuperuserDep,
     question_id: uuid.UUID,
     files: List[UploadFile] = File(None),
 ):
-    await QuestionsService(db).patch_questions_file(question_id, files)
+    if not role_admin:
+        raise RolesAdminException
+    try:
+        await QuestionsService(db).patch_questions_file(question_id, files)
+    except ExpiredTokenException:
+        raise ExpiredTokenHTTPException
+    except ObjectNotFoundException:
+        raise UserNotFoundException
     return {"message": "Файлы успешно обновлены"}

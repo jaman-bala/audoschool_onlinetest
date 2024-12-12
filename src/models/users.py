@@ -1,5 +1,5 @@
 import uuid
-from typing import Optional, List
+from typing import List
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
@@ -20,12 +20,12 @@ class UsersOrm(Base):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    firstname: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    lastname: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    phone: Mapped[Optional[str]] = mapped_column(String(20))
+    firstname: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    lastname: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    phone: Mapped[str | None] = mapped_column(String(20))
     hashed_password: Mapped[str] = mapped_column(String(200))
     is_ready: Mapped[int] = mapped_column(Integer)
-    group_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+    group_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("groups.id"), nullable=True
     )
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)

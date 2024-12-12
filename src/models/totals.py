@@ -1,5 +1,4 @@
 import uuid
-from typing import Optional
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
@@ -16,9 +15,9 @@ class TotalOrm(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"))
-    points: Mapped[Optional[int]] = mapped_column(Integer)
-    date_from: Mapped[Optional[date]] = mapped_column(Date)
-    date_end: Mapped[Optional[date]] = mapped_column(Date)
+    points: Mapped[int | None] = mapped_column(Integer)
+    date_from: Mapped[date | None] = mapped_column(Date)
+    date_end: Mapped[date | None] = mapped_column(Date)
 
     created_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

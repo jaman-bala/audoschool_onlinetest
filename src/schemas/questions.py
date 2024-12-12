@@ -1,6 +1,7 @@
 import uuid
 from pydantic import BaseModel, ConfigDict, Field
 
+
 class QuestionAddRequest(BaseModel):
     title: str = Field(default=None, max_length=999)
     description: str = Field(default=None)
@@ -15,11 +16,13 @@ class QuestionAdd(BaseModel):
     theme_id: uuid.UUID
     files: list[str]
 
+
 class QuestionPatch(BaseModel):
     title: str
     description: str
     ticket_id: uuid.UUID
     theme_id: uuid.UUID
+
 
 class QuestionPatchFile(BaseModel):
     files: list[str]

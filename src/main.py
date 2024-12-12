@@ -39,7 +39,9 @@ app = FastAPI(
 
 app.mount("/static/avatars", StaticFiles(directory=settings.LINK_IMAGES), name="avatars")
 app.mount("/static/photo", StaticFiles(directory=settings.LINK_UPLOAD_PHOTO), name="photo")
-app.mount("/static/upload-files", StaticFiles(directory=settings.LINK_UPLOAD_FILES), name="upload-files")
+app.mount(
+    "/static/upload-files", StaticFiles(directory=settings.LINK_UPLOAD_FILES), name="upload-files"
+)
 
 app.include_router(router_auth)
 app.include_router(router_images)
@@ -54,4 +56,4 @@ app.include_router(router_totals)
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", reload=True, port=8003)  # host="0.0.0.0",

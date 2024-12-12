@@ -1,5 +1,4 @@
 import uuid
-from typing import Optional
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, date
 from sqlalchemy.orm import Mapped, mapped_column
@@ -16,7 +15,7 @@ class PaymentOrm(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"))
     date_check: Mapped[date] = mapped_column(Date)
-    price: Mapped[Optional[int]] = mapped_column(Integer, default=0)
+    price: Mapped[int | None] = mapped_column(Integer, default=0)
 
     created_date: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

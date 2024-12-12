@@ -34,7 +34,7 @@ def get_current_user_id(token: str = Depends(get_token)) -> int:
 def get_current_is_superuser(token: str = Depends(get_token)) -> bool:
     try:
         data = AuthService().decode_access_token(token)
-        return data.get("is_superuser", False)
+        return "ADMIN" in data.get("roles", [])
     except InvalidTokenException:
         raise HTTPException(status_code=401, detail="Неправильный токен доступа")
 
@@ -42,7 +42,7 @@ def get_current_is_superuser(token: str = Depends(get_token)) -> bool:
 def get_current_admin(token: str = Depends(get_token)) -> bool:
     try:
         data = AuthService().decode_access_token(token)
-        return data.get("admin", False)
+        return "USER" in data.get("roles", [])
     except InvalidTokenException:
         raise HTTPException(status_code=401, detail="Неправильный токен доступа")
 

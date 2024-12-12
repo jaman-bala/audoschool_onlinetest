@@ -32,5 +32,8 @@ class AnswersService(BaseService):
         await self.db.commit()
 
     async def delete_answer(self, answer_id: uuid.UUID):
+        answer = await self.db.answers.get_one_or_none(id=answer_id)
+        if not answer:
+            raise AnswerNotFoundException
         await self.db.answers.delete(id=answer_id)
         await self.db.commit()

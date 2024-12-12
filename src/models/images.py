@@ -1,15 +1,9 @@
 import uuid
-import typing
-from typing import Optional
 from sqlalchemy.dialects.postgresql import UUID
-
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, ForeignKey
 
 from src.database import Base
-
-if typing.TYPE_CHECKING:
-    from src.models import QuestionOrm
 
 
 class AvatarOrm(Base):

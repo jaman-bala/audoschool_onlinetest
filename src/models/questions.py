@@ -23,4 +23,3 @@ class QuestionOrm(Base):
     theme_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("themes.id")
     )  # TODO: Связь с темой
-

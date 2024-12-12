@@ -34,9 +34,7 @@ def downgrade() -> None:
     op.create_table(
         "photos",
         sa.Column("id", sa.UUID(), autoincrement=False, nullable=False),
-        sa.Column(
-            "filename", sa.VARCHAR(length=999), autoincrement=False, nullable=True
-        ),
+        sa.Column("filename", sa.VARCHAR(length=999), autoincrement=False, nullable=True),
         sa.Column("question_id", sa.UUID(), autoincrement=False, nullable=False),
         sa.Column(
             "created_at",
@@ -52,9 +50,7 @@ def downgrade() -> None:
             autoincrement=False,
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(
-            ["question_id"], ["questions.id"], name="photos_question_id_fkey"
-        ),
+        sa.ForeignKeyConstraint(["question_id"], ["questions.id"], name="photos_question_id_fkey"),
         sa.PrimaryKeyConstraint("id", name="photos_pkey"),
     )
     # ### end Alembic commands ###
