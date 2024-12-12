@@ -11,7 +11,7 @@ services:
     volumes:
       - ./media:/app/media
       - ./static:/app/static
-    env_file: .env.example
+    env_file: .env
     ports:
       - "8000:8000"
     links:
