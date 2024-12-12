@@ -51,20 +51,19 @@ class QuestionsService(BaseService):
         await self.db.questions.delete(id=question_id)
         await self.db.commit()
 
-    async def patch_questions_file(self, question_id: uuid.UUID, files: list[UploadFile] = File(None)):
-        # Получаем вопрос из базы данных
+    async def patch_questions_file(
+            self,
+            question_id: uuid.UUID,
+            files: list[UploadFile] = File(None)
+    ):
         question = await self.db.questions.get_one_or_none(id=question_id)
 
         if not question:
             raise QuestionNotFoundException
-
-        # Получаем новые файлы, если они есть
         if files:
-            new_filenames = await self.db.questions.upload_put(files)
-            # Если новые файлы есть, добавляем их
-            question.files.extend(new_filenames)
+            new_filenames = await self.db.questions.upload_files(files)
+            question.files = new_filenames
 
-        # Если файлов нет, оставляем старые
         await self.db.questions.update(question)
         await self.db.commit()
 
