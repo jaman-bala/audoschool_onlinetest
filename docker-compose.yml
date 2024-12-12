@@ -1,46 +1,39 @@
 version: '3.8'
 
 services:
-  # Backend service
-  backend:
-    image: backend
+  app:
+    container_name: backend
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfiles/Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./media:/app/media
+      - ./static:/app/static
+    env_file: .env.example
     ports:
       - "8000:8000"
-    env_file:
-      - .env
+    links:
+      - db
     depends_on:
       - db
-      - redis
-    networks:
-      - backend_network
 
-  # PostgreSQL service
+
   db:
-    image: postgres:12.4-alpine
+    container_name: db
+    restart: always
+    image: postgres:13
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file: .env
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - backend_network
-
-  # Redis service for caching and task queuing
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-    networks:
-      - backend_network
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  db_data:
-
-networks:
-  backend_network:
+  postgres_data:
+  static:
