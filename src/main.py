@@ -2,6 +2,7 @@ import sys
 import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi_cache import FastAPICache
@@ -41,6 +42,14 @@ app.mount("/static/avatars", StaticFiles(directory=settings.LINK_IMAGES), name="
 app.mount("/static/photo", StaticFiles(directory=settings.LINK_UPLOAD_PHOTO), name="photo")
 app.mount(
     "/static/upload-files", StaticFiles(directory=settings.LINK_UPLOAD_FILES), name="upload-files"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Разрешить запросы с любых источников. Можете ограничить список доменов
+    allow_credentials=True,
+    allow_methods=["*"],  # Разрешить все методы (GET, POST, PUT, DELETE и т.д.)
+    allow_headers=["*"],  # Разрешить все заголовки
 )
 
 app.include_router(router_auth)

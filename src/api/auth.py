@@ -56,10 +56,8 @@ async def login_user(
         raise UserNotRegisteredHTTPException
     except IncorrectPasswordException:
         raise IncorrectPasswordHTTPException
-
-    response.set_cookie("access_token", access_token)
-    response.set_cookie("refresh_token", refresh_token)
-    return {"status": "Успешный вход", "access_token": access_token, "refresh_token": refresh_token}
+    response.set_cookie("refresh_token", refresh_token, httponly=True)
+    return {"status": "Успешный вход", "access_token": access_token}
 
 
 @router.get("/me", summary="Мой профиль 👨🏽‍💻")
@@ -115,7 +113,7 @@ async def update_user(
     return {"message": "Данные пользователя частично изменены"}
 
 
-@router.delete("/{user_id")
+@router.delete("/{user_id", summary="Удаление пользователя 👨🏽‍💻")
 async def delete_user(user_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
         raise RolesAdminHTTPException

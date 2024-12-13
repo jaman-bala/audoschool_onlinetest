@@ -18,18 +18,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.alter_column(
-        'questions',
-        'files',
-        existing_type=sa.ARRAY(sa.String()),
-        nullable=True
-    )
+    op.alter_column("questions", "files", existing_type=sa.ARRAY(sa.String()), nullable=True)
+
 
 def downgrade() -> None:
-    op.alter_column(
-        'questions',
-        'files',
-        existing_type=sa.ARRAY(sa.String()),
-        nullable=False
-    )
-
+    op.alter_column("questions", "files", existing_type=sa.ARRAY(sa.String()), nullable=False)

@@ -27,12 +27,12 @@ async def add_answers(
     return {"status": "Ответ добавлен"}
 
 
-@router.get("")
+@router.get("", summary="Запрос всех данных")
 async def get_answers(current_data: UserIdDep, db: DBDep):
     return await AnswersService(db).get_answers()
 
 
-@router.patch("/{answer_id}")
+@router.patch("/{answer_id}", summary="Частичное изминение")
 async def update_answer(
     answer_id: uuid.UUID, role_admin: RoleSuperuserDep, data: AnswerPatch, db: DBDep
 ):
@@ -47,7 +47,7 @@ async def update_answer(
     return {"message": "Данные честично изменены"}
 
 
-@router.delete("/{answer_id}")
+@router.delete("/{answer_id}", summary="Удаление ответа")
 async def delete_answer(answer_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
         raise RolesAdminHTTPException
