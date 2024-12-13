@@ -4,7 +4,7 @@ from fastapi import APIRouter, UploadFile, File, Form
 
 from src.api.dependencies import DBDep, RoleSuperuserDep
 from src.exeptions import (
-    RolesAdminException,
+    RolesAdminHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     ObjectNotFoundException,
@@ -27,7 +27,7 @@ async def create_question(
     files: List[UploadFile] = File(None),
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await QuestionsService(db).create_questions(
         title=title, description=description, ticket_id=ticket_id, theme_id=theme_id, files=files
     )
@@ -44,7 +44,7 @@ async def patch_question(
     question_id: uuid.UUID, role_admin: RoleSuperuserDep, data: QuestionPatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await QuestionsService(db).patch_questions(question_id, data)
     except ExpiredTokenException:
@@ -57,7 +57,7 @@ async def patch_question(
 @router.delete("/{question_id}", summary="Удаление вопроса")
 async def delete_question(question_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await QuestionsService(db).delete_question(question_id)
     except ExpiredTokenException:
@@ -75,7 +75,7 @@ async def put_question_files(
     files: List[UploadFile] = File(None),
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await QuestionsService(db).patch_questions_file(question_id, files)
     except ExpiredTokenException:
@@ -83,3 +83,8 @@ async def put_question_files(
     except ObjectNotFoundException:
         raise UserNotFoundException
     return {"message": "Файлы успешно обновлены"}
+
+
+@router.get("/random")
+async def get_random_question(db: DBDep):
+    return await QuestionsService(db).get_random_questions()

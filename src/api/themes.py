@@ -5,7 +5,7 @@ from src.api.dependencies import DBDep, UserIdDep, RoleSuperuserDep
 from src.exeptions import (
     ExpiredTokenException,
     ExpiredTokenHTTPException,
-    RolesAdminException,
+    RolesAdminHTTPException,
     ObjectNotFoundException,
     UserNotFoundException,
 )
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/themes", tags=["Тема"])
 @router.post("", summary="Создание темы")
 async def create_theme(data: ThemeAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await ThemesService(db).create_themes(data)
     return {"message": "Тема создана"}
 
@@ -37,7 +37,7 @@ async def patch_theme(
     theme_id: uuid.UUID, role_admin: RoleSuperuserDep, data: ThemePatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await ThemesService(db).patch_theme(theme_id, data)
     except ExpiredTokenException:
@@ -50,7 +50,7 @@ async def patch_theme(
 @router.delete("/{theme_id}", summary="Удаление данных")
 async def delete_theme(theme_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await ThemesService(db).delete_theme(theme_id)
     except ExpiredTokenException:

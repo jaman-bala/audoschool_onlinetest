@@ -35,6 +35,10 @@ class QuestionsService(BaseService):
         questions = await self.db.questions.get_all()
         return questions
 
+    async def get_random_questions(self):
+        random_questions = await self.db.questions.get_random_questions()
+        return random_questions
+
     async def patch_questions(
         self, question_id: uuid.UUID, data: QuestionPatch, exclude_unset: bool = False
     ):

@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from src.api.dependencies import DBDep, RoleSuperuserDep, UserIdDep
 from src.exeptions import (
-    RolesAdminException,
+    RolesAdminHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     ObjectNotFoundException,
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/group", tags=["Группы"])
 @router.post("", summary="Создание группы")
 async def create_group(data: GroupAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await GroupsService(db).create_group(data)
     return {"message": "Группа создан"}
 
@@ -33,7 +33,7 @@ async def patch_group(
     grop_id: uuid.UUID, role_admin: RoleSuperuserDep, data: GroupPatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await GroupsService(db).patch_group(grop_id, data)
     except ExpiredTokenException:
@@ -46,7 +46,7 @@ async def patch_group(
 @router.delete("/{group_id", summary="Удаление данных")
 async def delete_group(group_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await GroupsService(db).delete_group(group_id)
     except ExpiredTokenException:

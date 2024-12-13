@@ -57,7 +57,7 @@ class FaceNoCorrectionException(AllErrorException):
 
 
 class AnswerNotFoundException(AllErrorException):
-    detail = "Вопрос не найден"
+    detail = "Ответ не найден"
 
 
 class GroupNotFoundException(AllErrorException):
@@ -141,41 +141,46 @@ class FaceNotImagesHTTPException(AllErrorHTTPException):
     detail = "Лицо не найдено в базе данных"
 
 
-class ForbiddenException(AllErrorHTTPException):
+class ForbiddenHTTPException(AllErrorHTTPException):
     status_code = 403
     detail = "Недостаточно прав!"
 
 
-class ImagesFormatException(AllErrorHTTPException):
+class ImagesFormatHTTPException(AllErrorHTTPException):
     status_code = 400
     detail = "Неподдерживаемый тип файла. Допустимы только JPEG или PNG."
 
 
-class ImagesSizeException(AllErrorHTTPException):
+class ImagesSizeHTTPException(AllErrorHTTPException):
     status_code = 400
     detail = "Размер изображения превышает допустимый размер."
 
 
-class ImagesAlreadyException(AllErrorHTTPException):
+class ImagesAlreadyHTTPException(AllErrorHTTPException):
     status_code = 404
     detail = "Изображение не найдено"
 
 
-class CurrentRolesException(AllErrorHTTPException):
+class CurrentRolesHTTPException(AllErrorHTTPException):
     status_code = 401
     detail = "Недостаточно прав для выполнения этого действия."
 
 
-class RolesSuperuserException(AllErrorHTTPException):
+class RolesSuperuserHTTPException(AllErrorHTTPException):
     status_code = 403
     detail = "Доступ запрещен. Только суперпользователь может использовать эту ручку."
 
 
-class RolesAdminException(AllErrorHTTPException):
+class RolesAdminHTTPException(AllErrorHTTPException):
     status_code = 403
     detail = "Доступ запрещен. Только администратор может использовать эту ручку."
 
 
-class RolesUserException(AllErrorHTTPException):
+class RolesUserHTTPException(AllErrorHTTPException):
     status_code = 403
     detail = "Доступ запрещен. У вас нет прав."
+
+
+class AnswerHTTPException(AllErrorHTTPException):
+    status_code = 404
+    detail = "Ответ не найден"

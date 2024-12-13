@@ -1,5 +1,6 @@
 import uuid
 import aiofiles
+from sqlalchemy import select, func
 from fastapi import UploadFile
 
 from src.config import settings
@@ -29,5 +30,11 @@ class QuestionsRepository(BaseRepository):
             async with aiofiles.open(file_path, "wb") as buffer:
                 content = await file.read()
                 await buffer.write(content)
-            file_paths.append(f"/static/photo/{unique_filename}")
+            file_paths.append(f"{settings.LINK_UPLOAD_PHOTO}{unique_filename}")
         return file_paths
+
+    async def get_random_questions(self, limit: int = 20):
+        results = await self.session.execute(
+            select(QuestionOrm).order_by(func.random()).limit(limit)
+        )
+        return results.scalars().all()

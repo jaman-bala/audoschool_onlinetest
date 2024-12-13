@@ -14,7 +14,7 @@ class QuestionAdd(BaseModel):
     description: str
     ticket_id: uuid.UUID
     theme_id: uuid.UUID
-    files: list[str]
+    files: list[str] | None = None
 
 
 class QuestionPatch(BaseModel):
@@ -25,7 +25,7 @@ class QuestionPatch(BaseModel):
 
 
 class QuestionPatchFile(BaseModel):
-    files: list[str]
+    files: list[str] | None = None
 
 
 class Question(BaseModel):
@@ -34,6 +34,6 @@ class Question(BaseModel):
     description: str
     ticket_id: uuid.UUID
     theme_id: uuid.UUID
-    files: list[str]
+    files: list[str] | None = None
 
     model_config = ConfigDict(from_attributes=True)

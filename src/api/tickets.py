@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from src.api.dependencies import DBDep, RoleSuperuserDep, UserIdDep
 from src.exeptions import (
-    RolesAdminException,
+    RolesAdminHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     ObjectNotFoundException,
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/tickets", tags=["Билеты"])
 @router.post("", summary="Добавить билет")
 async def create_tickets(data: TicketAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await TicketsService(db).create_tickets(data)
     return {
         "message": "Билет создан",
@@ -35,7 +35,7 @@ async def patch_ticket(
     ticket_id: uuid.UUID, role_admin: RoleSuperuserDep, data: TicketPatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await TicketsService(db).patch_ticket(ticket_id, data)
     except ExpiredTokenException:
@@ -48,7 +48,7 @@ async def patch_ticket(
 @router.delete("/{ticket_id}")
 async def delete_ticket(ticket_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await TicketsService(db).delete_ticket(ticket_id)
     except ExpiredTokenException:

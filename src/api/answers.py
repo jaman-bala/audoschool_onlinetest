@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from src.api.dependencies import DBDep, RoleSuperuserDep, UserIdDep
 from src.exeptions import (
-    RolesAdminException,
+    RolesAdminHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     ObjectNotFoundException,
@@ -22,7 +22,7 @@ async def add_answers(
     db: DBDep,
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await AnswersService(db).create_answers(data)
     return {"status": "Ответ добавлен"}
 
@@ -37,7 +37,7 @@ async def update_answer(
     answer_id: uuid.UUID, role_admin: RoleSuperuserDep, data: AnswerPatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await AnswersService(db).patch_answers(answer_id, data)
     except ExpiredTokenException:
@@ -50,7 +50,7 @@ async def update_answer(
 @router.delete("/{answer_id}")
 async def delete_answer(answer_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await AnswersService(db).delete_answer(answer_id)
     except ExpiredTokenException:

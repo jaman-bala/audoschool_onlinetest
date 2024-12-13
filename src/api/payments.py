@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from src.api.dependencies import DBDep, RoleSuperuserDep
 from src.exeptions import (
-    RolesAdminException,
+    RolesAdminHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     ObjectNotFoundException,
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/payments", tags=["Платёж"])
 @router.post("", summary="Добавить платёж")
 async def create_payments(data: PaymentAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await PaymentsService(db).create_payments(data)
     return {"message": "Платёж создан"}
 
@@ -33,7 +33,7 @@ async def patch_payments(
     payment_id: uuid.UUID, role_admin: RoleSuperuserDep, data: PaymentPatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await PaymentsService(db).patch_payments(payment_id, data)
     except ExpiredTokenException:
@@ -46,7 +46,7 @@ async def patch_payments(
 @router.delete("/{payment_id}", summary="Удаление данных")
 async def delete_payments(payment_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await PaymentsService(db).delete_payments(payment_id)
     except ExpiredTokenException:

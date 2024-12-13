@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from src.api.dependencies import DBDep, RoleSuperuserDep
 from src.exeptions import (
-    RolesAdminException,
+    RolesAdminHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
     ObjectNotFoundException,
@@ -22,7 +22,7 @@ async def create_report(
     db: DBDep,
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     await ReportsService(db).create_reports(data)
     return {"status": "Отчёт добавлен"}
 
@@ -37,7 +37,7 @@ async def patch_report(
     report_id: uuid.UUID, role_admin: RoleSuperuserDep, data: ReportPatch, db: DBDep
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await ReportsService(db).patch_reports(report_id, data)
     except ExpiredTokenException:
@@ -50,7 +50,7 @@ async def patch_report(
 @router.delete("/{report_id}", summary="Удаление отчёта")
 async def delete_report(report_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await ReportsService(db).delete_reports(report_id)
     except ExpiredTokenException:

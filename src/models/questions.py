@@ -16,7 +16,7 @@ class QuestionOrm(Base):
         String(999)
     )  # TODO: Заголовок или краткое описание вопросов
     description: Mapped[str | None] = mapped_column(String())  # TODO: Полное описание вопросов
-    files: Mapped[list[str] | None] = mapped_column(ARRAY(String))
+    files: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True) # TODO Вставка файлов
     ticket_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("tickets.id")
     )  # TODO: Связь с билетом

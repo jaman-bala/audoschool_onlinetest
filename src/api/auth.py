@@ -12,8 +12,8 @@ from src.exeptions import (
     IncorrectPasswordHTTPException,
     ExpiredTokenException,
     ExpiredTokenHTTPException,
-    RolesAdminException,
-    RolesSuperuserException,
+    RolesAdminHTTPException,
+    RolesSuperuserHTTPException,
 )
 from src.schemas.users import (
     UserRequestLogin,
@@ -33,7 +33,7 @@ async def register_user(
     db: DBDep,
 ):
     if not role_superuser:
-        raise RolesSuperuserException
+        raise RolesSuperuserHTTPException
     await AuthService(db).register_user(data)
 
     return {"status": "Пользователь создан"}
@@ -80,7 +80,7 @@ async def get_all_users(
     db: DBDep,
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         return await AuthService(db).get_all_users()
     except ExpiredTokenException:
@@ -105,7 +105,7 @@ async def update_user(
     data: UserPatchRequest,
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await AuthService(db).patch_user(user_id, data)
     except ExpiredTokenException:
@@ -118,7 +118,7 @@ async def update_user(
 @router.delete("/{user_id")
 async def delete_user(user_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await AuthService(db).delete_user(user_id)
     except ExpiredTokenException:
@@ -136,7 +136,7 @@ async def change_password(
     db: DBDep,
 ):
     if not role_admin:
-        raise RolesAdminException
+        raise RolesAdminHTTPException
     try:
         await AuthService(db).change_password(user_id, data)
     except ExpiredTokenException:
