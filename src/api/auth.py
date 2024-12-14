@@ -56,6 +56,7 @@ async def login_user(
         raise UserNotRegisteredHTTPException
     except IncorrectPasswordException:
         raise IncorrectPasswordHTTPException
+    response.set_cookie("access_token", access_token)
     response.set_cookie("refresh_token", refresh_token, httponly=True)
     return {"status": "Успешный вход", "access_token": access_token}
 
