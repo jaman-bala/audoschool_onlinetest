@@ -31,6 +31,10 @@ async def add_answers(
 async def get_answers(current_data: UserIdDep, db: DBDep):
     return await AnswersService(db).get_answers()
 
+@router.get("/{answer_id}")
+async def get_answer_by_id(answer_id: uuid.UUID, current_data: UserIdDep, db: DBDep):
+    return await AnswersService(db).get_answer_id(answer_id)
+
 
 @router.patch("/{answer_id}", summary="Частичное изминение")
 async def update_answer(
