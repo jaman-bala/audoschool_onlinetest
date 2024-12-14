@@ -114,7 +114,7 @@ async def update_user(
     return {"message": "Данные пользователя частично изменены"}
 
 
-@router.delete("/{user_id", summary="Удаление пользователя 👨🏽‍💻")
+@router.delete("/{user_id}", summary="Удаление пользователя 👨🏽‍💻")
 async def delete_user(user_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
         raise RolesAdminHTTPException

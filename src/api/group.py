@@ -28,7 +28,7 @@ async def get_group(current_data: UserIdDep, db: DBDep):
     return await GroupsService(db).get_group()
 
 
-@router.patch("/group_id", summary="Частичное изминение")
+@router.patch("/group_id}", summary="Частичное изминение")
 async def patch_group(
     grop_id: uuid.UUID, role_admin: RoleSuperuserDep, data: GroupPatch, db: DBDep
 ):
@@ -43,7 +43,7 @@ async def patch_group(
     return {"message": "Данные честично изменены"}
 
 
-@router.delete("/{group_id", summary="Удаление данных")
+@router.delete("/{group_id}", summary="Удаление данных")
 async def delete_group(group_id: uuid.UUID, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
         raise RolesAdminHTTPException
