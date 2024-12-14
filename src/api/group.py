@@ -28,7 +28,7 @@ async def get_group(current_data: UserIdDep, db: DBDep):
     return await GroupsService(db).get_group()
 
 
-@router.patch("/group_id}", summary="Частичное изминение")
+@router.patch("/{group_id}", summary="Частичное изминение")
 async def patch_group(
     grop_id: uuid.UUID, role_admin: RoleSuperuserDep, data: GroupPatch, db: DBDep
 ):
