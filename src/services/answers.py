@@ -26,6 +26,10 @@ class AnswersService(BaseService):
         answer_id = await self.db.answers.get_one(id=answer_id)
         return answer_id
 
+    async def get_answers_by_question_id(self, question_id: uuid.UUID):
+        answers = await self.db.answers.get_answers_by_question_id(question_id=question_id)
+        return answers
+
     async def patch_answers(
         self, answer_id: uuid.UUID, data: AnswerPatch, exclude_unset: bool = False
     ):

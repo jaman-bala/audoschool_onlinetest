@@ -35,6 +35,15 @@ async def get_answers(current_data: UserIdDep, db: DBDep):
 async def get_answer_by_id(answer_id: uuid.UUID, current_data: UserIdDep, db: DBDep):
     return await AnswersService(db).get_answer_id(answer_id)
 
+@router.get("/by-question/{question_id}", summary="Получить ответы по question_id")
+async def get_answers_by_question_id(
+    question_id: uuid.UUID,
+    current_data: UserIdDep,
+    db: DBDep
+):
+    answers = await AnswersService(db).get_answers_by_question_id(question_id)
+    return answers
+
 
 @router.patch("/{answer_id}", summary="Частичное изминение")
 async def update_answer(
