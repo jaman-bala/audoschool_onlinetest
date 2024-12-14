@@ -38,3 +38,8 @@ class QuestionsRepository(BaseRepository):
             select(QuestionOrm).order_by(func.random()).limit(limit)
         )
         return results.scalars().all()
+
+    async def get_questions_by_ticket_id(self, ticket_id: uuid.UUID):
+        query = select(self.model).where(self.model.ticket_id == ticket_id)
+        result = await self.session.execute(query)
+        return result.scalars().all()

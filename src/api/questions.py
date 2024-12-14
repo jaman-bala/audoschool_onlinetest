@@ -38,6 +38,11 @@ async def create_question(
 async def get_questions(db: DBDep):
     return await QuestionsService(db).get_questions()
 
+@router.get("/by-ticket/{ticket_id}", summary="Получить вопросы по ticket_id")
+async def get_questions_by_ticket_id(ticket_id: uuid.UUID, db: DBDep):
+    questions = await QuestionsService(db).get_questions_by_ticket_id(ticket_id)
+    return {"questions": questions}
+
 
 @router.patch("/{question_id}", summary="Частичное изминение данных")
 async def patch_question(
