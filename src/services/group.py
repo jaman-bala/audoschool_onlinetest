@@ -21,10 +21,15 @@ class GroupsService(BaseService):
         )
         await self.db.groups.add(new_group)
         await self.db.commit()
+        return new_group
 
     async def get_group(self):
         groups = await self.db.groups.get_all()
         return groups
+
+    async def get_by_group_id(self, group_id: uuid.UUID):
+        group_by_id = await self.db.groups.get_one_or_none(id=group_id)
+        return group_by_id
 
     async def patch_group(self, group_id: uuid.UUID, data: GroupPatch, exclude_unset: bool = False):
         groups = await self.db.groups.get_one_or_none(id=group_id)

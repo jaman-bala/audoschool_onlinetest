@@ -3,6 +3,8 @@ import uuid
 from fastapi import APIRouter, Response
 from uuid import UUID
 
+from tensorboard import summary
+
 from src.api.dependencies import UserIdDep, DBDep, RoleSuperuserDep
 from src.exeptions import (
     UserNotFoundException,
@@ -19,7 +21,7 @@ from src.schemas.users import (
     UserRequestLogin,
     UserRequestUpdatePassword,
     UserPatchRequest,
-    UserRequestAdd,
+    UserRequestAdd, UserResponse,
 )
 from src.services.auth import AuthService
 
@@ -28,15 +30,24 @@ router = APIRouter(prefix="/auth", tags=["Авторизация и аутент
 
 @router.post("/create", summary="Создание пользователя 👨🏽‍💻")
 async def register_user(
-    role_superuser: RoleSuperuserDep,
+   # role_superuser: RoleSuperuserDep,
     data: UserRequestAdd,
     db: DBDep,
 ):
-    if not role_superuser:
-        raise RolesSuperuserHTTPException
-    await AuthService(db).register_user(data)
+ #   if not role_superuser:
+  #      raise RolesSuperuserHTTPException
+    user = await AuthService(db).register_user(data)
+    user_response = UserResponse(
+        firstname=user.firstname,
+        lastname=user.lastname,
+        phone=user.phone,
+        is_ready=user.is_ready,
+        group_id=user.group_id,
+        is_active=user.is_active,
+        roles=user.roles,
+    )
 
-    return {"status": "Пользователь создан"}
+    return {"status": "Пользователь создан", "data": user_response}
 
 
 @router.post("/login", summary="Вход в систему 👨🏽‍💻")
@@ -75,11 +86,11 @@ async def get_me(
 
 @router.get("/get_all_users", summary="Вывод всех пользователей 👨🏽‍💻")
 async def get_all_users(
-    role_admin: RoleSuperuserDep,
+ #   role_admin: RoleSuperuserDep,
     db: DBDep,
 ):
-    if not role_admin:
-        raise RolesAdminHTTPException
+ #   if not role_admin:
+ #       raise RolesAdminHTTPException
     try:
         return await AuthService(db).get_all_users()
     except ExpiredTokenException:
@@ -141,3 +152,8 @@ async def change_password(
     except ExpiredTokenException:
         raise ExpiredTokenHTTPException
     return {"message": "Пароль успешно изменён"}
+
+@router.get("/get_users_by_group_id/{group_id}", summary="Вывод пользователей по группам")
+async def get_users_by_group_id(group_id: uuid.UUID, db: DBDep):
+    users = await AuthService(db).get_users_by_group_id(group_id)
+    return {"message": users}

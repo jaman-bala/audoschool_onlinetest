@@ -39,7 +39,6 @@ app = FastAPI(
 )
 
 app.mount("/static/avatars", StaticFiles(directory=settings.LINK_IMAGES), name="avatars")
-app.mount("/static/photo", StaticFiles(directory=settings.LINK_UPLOAD_PHOTO), name="photo")
 app.mount(
     "/static/upload-files", StaticFiles(directory=settings.LINK_UPLOAD_FILES), name="upload-files"
 )

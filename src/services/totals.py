@@ -18,6 +18,7 @@ class TotalsService(BaseService):
         )
         await self.db.totals.add(new_total)
         await self.db.commit()
+        return new_total
 
     async def get_totals(self):
         totals = await self.db.totals.get_all()

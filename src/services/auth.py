@@ -102,6 +102,7 @@ class AuthService(BaseService):
         try:
             await self.db.users.add(new_user_data)
             await self.db.commit()
+            return new_user_data
         except ObjectAlreadyExistsException as exc:
             raise UserAlreadyExistsException from exc
 
@@ -169,3 +170,8 @@ class AuthService(BaseService):
     async def delete_user(self, user_id: uuid.UUID):
         await self.db.users.delete(id=user_id)
         await self.db.commit()
+
+
+    async def get_users_by_group_id(self, group_id: uuid.UUID):
+        users = await self.db.users.get_users_by_group_id(group_id)
+        return users

@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 
 
@@ -13,6 +13,15 @@ class UserRequestAdd(BaseModel):
     firstname: str = Field(default=None, max_length=100)
     lastname: str = Field(default=None, max_length=100)
     password: str
+    phone: str
+    is_ready: int = Field(default=None)
+    group_id: uuid.UUID | None = None
+    is_active: bool | None = True
+    roles: list[Role] = Field(default_factory=lambda: [Role.USER])
+
+class UserResponse(BaseModel):
+    firstname: str = Field(default=None, max_length=100)
+    lastname: str = Field(default=None, max_length=100)
     phone: str
     is_ready: int = Field(default=None)
     group_id: uuid.UUID | None = None
@@ -72,6 +81,8 @@ class User(BaseModel):
     roles: list[Role]
     created_date: datetime
     updated_date: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserWithHashedPassword(User):

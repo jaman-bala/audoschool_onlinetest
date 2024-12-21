@@ -15,6 +15,7 @@ class ThemesService(BaseService):
         )
         await self.db.themes.add(new_theme)
         await self.db.commit()
+        return new_theme
 
     async def get_theme(self):
         theme = await self.db.themes.get_all()

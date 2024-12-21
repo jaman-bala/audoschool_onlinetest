@@ -17,6 +17,7 @@ class AnswersService(BaseService):
         )
         await self.db.answers.add(new_answer)
         await self.db.commit()
+        return new_answer
 
     async def get_answers(self):
         answers = await self.db.answers.get_all()

@@ -17,6 +17,7 @@ class PaymentsService(BaseService):
         )
         await self.db.payments.add(new_payments)
         await self.db.commit()
+        return new_payments
 
     async def get_payments(self):
         payment = await self.db.payments.get_all()

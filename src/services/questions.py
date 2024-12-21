@@ -30,6 +30,7 @@ class QuestionsService(BaseService):
         )
         await self.db.questions.add(new_question)
         await self.db.commit()
+        return new_question
 
     async def get_questions(self):
         questions = await self.db.questions.get_all()

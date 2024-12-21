@@ -1,3 +1,6 @@
+import uuid
+
+from celery.bin.result import result
 from sqlalchemy import select, update
 from pydantic import EmailStr
 
@@ -36,3 +39,9 @@ class UsersRepository(BaseRepository):
             .values(hashed_password=hashed_password)
         )
         await self.session.execute(query)
+
+
+    async def get_users_by_group_id(self, group_id: uuid.UUID):
+        query = select(self.model).where(self.model.group_id == group_id)
+        result = await self.session.execute(query)
+        return result.scalars().all()

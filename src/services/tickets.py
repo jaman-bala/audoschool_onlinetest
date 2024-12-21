@@ -15,6 +15,7 @@ class TicketsService(BaseService):
         )
         await self.db.tickets.add(create_ticket)
         await self.db.commit()
+        return create_ticket
 
     async def get_tickets(self):
         tickets = await self.db.tickets.get_all()

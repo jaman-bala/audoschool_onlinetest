@@ -20,6 +20,7 @@ class ReportsService(BaseService):
         )
         await self.db.reports.add(new_reports)
         await self.db.commit()
+        return new_reports
 
     async def get_reports(self):
         reports = await self.db.reports.get_all()
