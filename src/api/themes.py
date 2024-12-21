@@ -16,11 +16,15 @@ router = APIRouter(prefix="/themes", tags=["Тема"])
 
 
 @router.post("", summary="Создание темы")
-async def create_theme(data: ThemeAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
+async def create_theme(
+    data: ThemeAddRequest,
+    role_admin: RoleSuperuserDep,
+    db: DBDep,
+):
     if not role_admin:
         raise RolesAdminHTTPException
-    await ThemesService(db).create_themes(data)
-    return {"message": "Тема создана"}
+    themes = await ThemesService(db).create_themes(data)
+    return {"message": "Тема создана", "data": themes}
 
 
 @router.get("", summary="Запрос всех тем")
@@ -30,6 +34,11 @@ async def get_theme(current_data: UserIdDep, db: DBDep):
     except ExpiredTokenException:
         raise ExpiredTokenHTTPException
     return {"message": "Доступ разрешен", "data": themes}
+
+
+@router.get("/{theme_id}", summary="Запрос по ID")
+async def get_themes_by_id(current: UserIdDep, theme_id: uuid.UUID, db: DBDep):
+    await ThemesService(db).get_themes_by_id(theme_id)
 
 
 @router.patch("/{theme_id}", summary="Частичное изминение данных")

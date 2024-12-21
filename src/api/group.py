@@ -18,18 +18,18 @@ router = APIRouter(prefix="/group", tags=["Группы"])
 @router.post("", summary="Создание группы")
 async def create_group(
     data: GroupAddRequest,
-    #       role_admin: RoleSuperuserDep,
+    role_admin: RoleSuperuserDep,
     db: DBDep,
 ):
-    #  if not role_admin:
-    #       raise RolesAdminHTTPException
+    if not role_admin:
+        raise RolesAdminHTTPException
     groups = await GroupsService(db).create_group(data)
     return {"message": "Группа создан", "data": groups}
 
 
 @router.get("", summary="Запрос всех групп")
 async def get_group(
-    #    current_data: UserIdDep,
+    current_data: UserIdDep,
     db: DBDep,
 ):
     return await GroupsService(db).get_group()
@@ -37,9 +37,9 @@ async def get_group(
 
 @router.get("/{group_id}", summary="Запрос по ID")
 async def get_group_by_id(
-#    current_data: UserIdDep,
-        group_id: uuid.UUID,
-        db: DBDep
+    current_data: UserIdDep,
+    group_id: uuid.UUID,
+    db: DBDep,
 ):
     return await GroupsService(db).get_by_group_id(group_id)
 

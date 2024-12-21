@@ -26,6 +26,10 @@ class ReportsService(BaseService):
         reports = await self.db.reports.get_all()
         return reports
 
+    async def get_reports_by_id(self, report_id: uuid.UUID):
+        reports = await self.db.reports.get_one_or_none(id=report_id)
+        return reports
+
     async def patch_reports(
         self, report_id: uuid.UUID, data: ReportPatch, exclude_unset: bool = False
     ):

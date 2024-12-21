@@ -21,6 +21,10 @@ class TicketsService(BaseService):
         tickets = await self.db.tickets.get_all()
         return tickets
 
+    async def get_tickets_by_id(self, ticket_id: uuid.UUID):
+        tickets = await self.db.tickets.get_one_or_none(id=ticket_id)
+        return tickets
+
     async def patch_ticket(
         self, ticket_id: uuid.UUID, data: TicketPatch, exclude_unset: bool = False
     ):

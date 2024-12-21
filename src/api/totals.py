@@ -19,13 +19,18 @@ router = APIRouter(prefix="/totals", tags=["Финальный отчёт"])
 async def create_total(data: TotalAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
     if not role_admin:
         raise RolesAdminHTTPException
-    await TotalsService(db).ctrate_totals(data)
-    return {"message": "Финальный отчёт создан"}
+    totals = await TotalsService(db).ctrate_totals(data)
+    return {"message": "Финальный отчёт создан", "data": totals}
 
 
 @router.get("", summary="Запрос всех данных")
 async def get_total(current_data: UserIdDep, db: DBDep):
     return await TotalsService(db).get_totals()
+
+
+@router.get("?{total_id}", summary="Запрос по ID")
+async def get_totals_by_id(current: UserIdDep, total_id: uuid.UUID, db: DBDep):
+    await TotalsService(db).get_totals_by_id(total_id)
 
 
 @router.patch("/{total_id}", summary="Частичное изминение данных")

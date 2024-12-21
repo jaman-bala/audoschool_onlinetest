@@ -32,6 +32,7 @@ class Settings(BaseSettings):
 
     LINK_IMAGES: str
     LINK_UPLOAD_FILES: str
+    LINK_UPLOAD_PHOTO: str
 
     model_config = SettingsConfigDict(env_file=".env")  # extra="ignore"
 

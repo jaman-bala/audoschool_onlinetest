@@ -16,18 +16,25 @@ router = APIRouter(prefix="/tickets", tags=["Билеты"])
 
 
 @router.post("", summary="Добавить билет")
-async def create_tickets(data: TicketAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
+async def create_tickets(
+    data: TicketAddRequest,
+    role_admin: RoleSuperuserDep,
+    db: DBDep,
+):
     if not role_admin:
         raise RolesAdminHTTPException
-    await TicketsService(db).create_tickets(data)
-    return {
-        "message": "Билет создан",
-    }
+    tickets = await TicketsService(db).create_tickets(data)
+    return {"message": "Билет создан", "data": tickets}
 
 
 @router.get("", summary="Запрос всех данных")
 async def get_tickets(current_data: UserIdDep, db: DBDep):
     return await TicketsService(db).get_tickets()
+
+
+@router.get("/{ticket_id}", summary="Запрос по ID")
+async def get_tickets_by_id(current: UserIdDep, ticket_id: uuid.UUID, db: DBDep):
+    await TicketsService(db).get_tickets_by_id(ticket_id)
 
 
 @router.patch("/{ticket_id}", summary="Частичное изминение данных")

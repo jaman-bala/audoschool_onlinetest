@@ -24,6 +24,10 @@ class TotalsService(BaseService):
         totals = await self.db.totals.get_all()
         return totals
 
+    async def get_totals_by_id(self, total_id: uuid.UUID):
+        totals = await self.db.totals.get_one_or_none(id=total_id)
+        return totals
+
     async def patch_totals(
         self, total_id: uuid.UUID, data: TotalPatch, exclude_unset: bool = False
     ):

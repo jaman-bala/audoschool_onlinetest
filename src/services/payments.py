@@ -1,8 +1,7 @@
 import uuid
-from datetime import datetime
 
 from src.exeptions import PaymentNotFoundException
-from src.schemas.payments import PaymentAddRequest, PaymentAdd, PaymentPatch
+from src.schemas.payments import PaymentAddRequest, PaymentPatch
 from src.services.base import BaseService
 
 

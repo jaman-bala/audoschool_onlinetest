@@ -1,6 +1,5 @@
 import uuid
 
-from celery.bin.result import result
 from sqlalchemy import select, update
 from pydantic import EmailStr
 
@@ -22,14 +21,14 @@ class UsersRepository(BaseRepository):
 
     async def get_user_inn_with_hashed_password(self, inn: str):
         query = select(self.model).filter_by(inn=inn)
-        result = await self.session.execute(query)
-        model = result.scalars().one()
+        results = await self.session.execute(query)
+        model = results.scalars().one()
         return UserWithHashedPassword.model_validate(model)
 
     async def get_user_phone_number_with_hashed_password(self, phone: str):
         query = select(self.model).filter_by(phone=phone)
         result = await self.session.execute(query)
-        model = result.scalars().one()
+        model = result.scalars().first()
         return UserWithHashedPassword.model_validate(model.__dict__)
 
     async def update_user_hashed_password(self, user_id: int, hashed_password: str):

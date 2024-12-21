@@ -1,7 +1,7 @@
 import uuid
 from fastapi import APIRouter
 
-from src.api.dependencies import DBDep, RoleSuperuserDep
+from src.api.dependencies import DBDep, RoleSuperuserDep, UserIdDep
 from src.exeptions import (
     RolesAdminHTTPException,
     ExpiredTokenException,
@@ -23,13 +23,18 @@ async def create_report(
 ):
     if not role_admin:
         raise RolesAdminHTTPException
-    await ReportsService(db).create_reports(data)
-    return {"status": "Отчёт добавлен"}
+    reports = await ReportsService(db).create_reports(data)
+    return {"status": "Отчёт добавлен", "data": reports}
 
 
 @router.get("", summary="Запрос всех данных")
-async def get_report(db: DBDep):
+async def get_report(current: UserIdDep, db: DBDep):
     return await ReportsService(db).get_reports()
+
+
+@router.get("/{report_id", summary="Запрос по ID")
+async def get_reports_by_id(current: UserIdDep, report_id: uuid.UUID, db: DBDep):
+    await ReportsService(db).get_reports_by_id(report_id)
 
 
 @router.patch("/{report_id}", summary="Частичное изминение")

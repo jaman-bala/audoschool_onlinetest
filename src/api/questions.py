@@ -2,7 +2,7 @@ import uuid
 from typing import List
 from fastapi import APIRouter, UploadFile, File, Form
 
-from src.api.dependencies import DBDep, RoleSuperuserDep
+from src.api.dependencies import DBDep, RoleSuperuserDep, UserIdDep
 from src.exeptions import (
     RolesAdminHTTPException,
     ExpiredTokenException,
@@ -28,15 +28,20 @@ async def create_question(
 ):
     if not role_admin:
         raise RolesAdminHTTPException
-    await QuestionsService(db).create_questions(
+    questions = await QuestionsService(db).create_questions(
         title=title, description=description, ticket_id=ticket_id, theme_id=theme_id, files=files
     )
-    return {"message": "Вопрос создан"}
+    return {"message": "Вопрос создан", "data": questions}
 
 
 @router.get("", summary="Запрос всех вопросов")
-async def get_questions(db: DBDep):
+async def get_questions(db: DBDep, current: UserIdDep):
     return await QuestionsService(db).get_questions()
+
+
+@router.get("/{question_id", summary="Запрос по ID")
+async def get_questions_by_id(current: UserIdDep, question_id: uuid.UUID, db: DBDep):
+    await QuestionsService(db).get_by_questions_id(question_id)
 
 
 @router.get("/by-ticket/{ticket_id}", summary="Получить вопросы по ticket_id")
