@@ -19,6 +19,7 @@ class UserRequestAdd(BaseModel):
     is_active: bool | None = True
     roles: list[Role] = Field(default_factory=lambda: [Role.USER])
 
+
 class UserResponse(BaseModel):
     firstname: str = Field(default=None, max_length=100)
     lastname: str = Field(default=None, max_length=100)

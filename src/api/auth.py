@@ -3,8 +3,6 @@ import uuid
 from fastapi import APIRouter, Response
 from uuid import UUID
 
-from tensorboard import summary
-
 from src.api.dependencies import UserIdDep, DBDep, RoleSuperuserDep
 from src.exeptions import (
     UserNotFoundException,
@@ -21,7 +19,8 @@ from src.schemas.users import (
     UserRequestLogin,
     UserRequestUpdatePassword,
     UserPatchRequest,
-    UserRequestAdd, UserResponse,
+    UserRequestAdd,
+    UserResponse,
 )
 from src.services.auth import AuthService
 
@@ -30,12 +29,12 @@ router = APIRouter(prefix="/auth", tags=["Авторизация и аутент
 
 @router.post("/create", summary="Создание пользователя 👨🏽‍💻")
 async def register_user(
-   # role_superuser: RoleSuperuserDep,
+    # role_superuser: RoleSuperuserDep,
     data: UserRequestAdd,
     db: DBDep,
 ):
- #   if not role_superuser:
-  #      raise RolesSuperuserHTTPException
+    #   if not role_superuser:
+    #      raise RolesSuperuserHTTPException
     user = await AuthService(db).register_user(data)
     user_response = UserResponse(
         firstname=user.firstname,
@@ -84,13 +83,30 @@ async def get_me(
     return {"message": "Доступ разрешен", "data": users}
 
 
-@router.get("/get_all_users", summary="Вывод всех пользователей 👨🏽‍💻")
-async def get_all_users(
- #   role_admin: RoleSuperuserDep,
+@router.get("/get_users_by_id/{user_id}", summary="Запрос по ID user")
+async def get_users_by_id(
+    #   role_admin: RoleSuperuserDep,
+    user_id: uuid.UUID,
     db: DBDep,
 ):
- #   if not role_admin:
- #       raise RolesAdminHTTPException
+    #   if not role_admin:
+    #       raise RolesAdminHTTPException
+    try:
+        users = await AuthService(db).get_by_users_id(user_id)
+        return {"message": "Запрос выполнен", "data": users}
+    except ExpiredTokenException:
+        raise ExpiredTokenHTTPException
+    except ObjectNotFoundException:
+        raise UserNotFoundException
+
+
+@router.get("/get_all_users", summary="Вывод всех пользователей 👨🏽‍💻")
+async def get_all_users(
+    #   role_admin: RoleSuperuserDep,
+    db: DBDep,
+):
+    #   if not role_admin:
+    #       raise RolesAdminHTTPException
     try:
         return await AuthService(db).get_all_users()
     except ExpiredTokenException:
@@ -152,6 +168,7 @@ async def change_password(
     except ExpiredTokenException:
         raise ExpiredTokenHTTPException
     return {"message": "Пароль успешно изменён"}
+
 
 @router.get("/get_users_by_group_id/{group_id}", summary="Вывод пользователей по группам")
 async def get_users_by_group_id(group_id: uuid.UUID, db: DBDep):

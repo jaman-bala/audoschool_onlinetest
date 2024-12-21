@@ -8,20 +8,17 @@ from src.services.base import BaseService
 
 class PaymentsService(BaseService):
     async def create_payments(self, data: PaymentAddRequest):
-        new_payments = PaymentAdd(
-            user_id=data.user_id,
-            date_check=data.date_check,
-            price=data.price,
-            created_date=datetime.utcnow(),
-            updated_date=datetime.utcnow(),
-        )
-        await self.db.payments.add(new_payments)
+        payment = await self.db.payments.add(data)
         await self.db.commit()
-        return new_payments
+        return payment
 
     async def get_payments(self):
         payment = await self.db.payments.get_all()
         return payment
+
+    async def get_payment_by_id(self, payment_id: uuid.UUID):
+        payments = await self.db.payments.get_one_or_none(id=payment_id)
+        return payments
 
     async def patch_payments(
         self, payment_id: uuid.UUID, data: PaymentPatch, exclude_unset: bool = False

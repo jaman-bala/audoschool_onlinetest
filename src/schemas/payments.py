@@ -7,6 +7,8 @@ class PaymentAddRequest(BaseModel):
     user_id: uuid.UUID
     date_check: date
     price: int
+    created_date: datetime
+    updated_date: datetime
 
 
 class PaymentAdd(BaseModel):

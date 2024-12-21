@@ -16,16 +16,27 @@ router = APIRouter(prefix="/payments", tags=["Платёж"])
 
 
 @router.post("", summary="Добавить платёж")
-async def create_payments(data: PaymentAddRequest, role_admin: RoleSuperuserDep, db: DBDep):
-    if not role_admin:
-        raise RolesAdminHTTPException
-    await PaymentsService(db).create_payments(data)
-    return {"message": "Платёж создан"}
+async def create_payments(
+        data: PaymentAddRequest,
+    #    role_admin: RoleSuperuserDep,
+        db: DBDep):
+#    if not role_admin:
+#        raise RolesAdminHTTPException
+    payments = await PaymentsService(db).create_payments(data)
+    return {"message": "Платёж создан", "data": payments}
 
 
 @router.get("", summary="Запрос всех данных")
 async def get_payments(db: DBDep):
     return await PaymentsService(db).get_payments()
+
+@router.get("/{payment_id}", summary="Запрос по ID")
+async def get_by_payments_id(
+        #    current_data: UserIdDep,
+        payment_id: uuid.UUID,
+        db: DBDep
+):
+    return await PaymentsService(db).get_payment_by_id(payment_id)
 
 
 @router.patch("/{payment_id}", summary="Частичное изминение данных")

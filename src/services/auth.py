@@ -121,6 +121,10 @@ class AuthService(BaseService):
             raise IncorrectTokenHTTPException
         return user
 
+    async def get_by_users_id(self, user_id: uuid.UUID):
+        users = await self.db.users.get_one(id=user_id)
+        return users
+
     async def login_user(self, data: UserRequestLogin):
         user = await self.db.users.get_user_phone_number_with_hashed_password(phone=data.phone)
         if not user:
@@ -170,7 +174,6 @@ class AuthService(BaseService):
     async def delete_user(self, user_id: uuid.UUID):
         await self.db.users.delete(id=user_id)
         await self.db.commit()
-
 
     async def get_users_by_group_id(self, group_id: uuid.UUID):
         users = await self.db.users.get_users_by_group_id(group_id)

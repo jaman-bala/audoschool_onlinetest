@@ -40,7 +40,6 @@ class UsersRepository(BaseRepository):
         )
         await self.session.execute(query)
 
-
     async def get_users_by_group_id(self, group_id: uuid.UUID):
         query = select(self.model).where(self.model.group_id == group_id)
         result = await self.session.execute(query)
